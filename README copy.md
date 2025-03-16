@@ -1,4 +1,8 @@
-# pymongo-api
+
+# Приветствую
+1. Запускать или отсюда или из sharding-repl-cache
+2. Для шард сделал только по две рплики, побоялся, что ноут не вытянет. Как сделать три - понятно.
+3. Схема  task1.drawio или тут https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=task1.drawio&dark=auto#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1jpH9Xj1FmPDvCdcHlaUFqyx5Tfg19RzJ%26export%3Ddownload
 
 ## Как запустить
 
