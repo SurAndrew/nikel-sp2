@@ -26,15 +26,9 @@ docker compose up -d
 ./scripts/4-init-router.sh
 ```
 
-## 5 Делаем кластер REDIS
+
+## 5 Проверка данных по шардам
 
 ```shell
-./scripts/5-init-redis1.sh
-```
-
-
-## 6 Проверка данных по шардам
-
-```shell
-./scripts/6-show-data.sh
+./scripts/5-show-data.sh
 ```
