@@ -1,4 +1,3 @@
-# Как запустить
 
 ## 1 Запускаемся...
 ```shell
@@ -32,3 +31,7 @@ docker compose up -d
 ```shell
 ./scripts/5-show-data.sh
 ```
+
+## 6 Как запустить приложение
+
+http://localhost:8080/
