@@ -1,9 +1,8 @@
-name: sharding-repl-cache
+name: mongo-sharding-repl
 services:
   # сервер конфигурации
   configSrv:
-#    image: mongo:latest # docker образ
-    image: dh-mirror.gitverse.ru/mongo:latest
+    image: mongo:latest # docker образ
     container_name: configSrv 
     restart: always
     ports:
@@ -29,8 +28,7 @@ services:
 
   # 1-й узел шарды rs0
   mongo1:
-#    image: mongo:latest # docker образ
-    image: dh-mirror.gitverse.ru/mongo:latest
+    image: mongo:latest
     container_name: mongo1
     restart: always
     ports:
@@ -56,8 +54,7 @@ services:
 
   # 2-й узел шарды шарды rs0 
   mongo2:
-#    image: mongo:latest # docker образ
-    image: dh-mirror.gitverse.ru/mongo:latest
+    image: mongo:latest
     container_name: mongo2
     restart: always
     ports:
@@ -84,8 +81,7 @@ services:
 
  # 3-й шард 
   mongo3:
-#    image: mongo:latest # docker образ
-    image: dh-mirror.gitverse.ru/mongo:latest
+    image: mongo:latest
     container_name: mongo3
     restart: always
     ports:
@@ -111,8 +107,7 @@ services:
 
   # 4-й шард 
   mongo4:
-#    image: mongo:latest # docker образ
-    image: dh-mirror.gitverse.ru/mongo:latest
+    image: mongo:latest
     container_name: mongo4
     restart: always
     ports:
@@ -138,8 +133,7 @@ services:
 
   # роутер
   mongos_router:
-#    image: mongo:latest # docker образ
-    image: dh-mirror.gitverse.ru/mongo:latest
+    image: mongo:latest
     container_name: mongos_router
     restart: always
     ports:
@@ -161,21 +155,6 @@ services:
       interval: 5s
       start_period: 10s
 
-################################################### redis #################
-  redis_1:
-    image: "redis:latest"
-    container_name: redis_1
-    ports:
-      - "6379"
-    volumes:
-      - redis_1_data:/data
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
-    networks:
-      app-network:
-        ipv4_address: 173.17.0.2
-
-################################################### redis #################
 ## pymongo_api
   pymongo_api:
     container_name: pymongo_api
@@ -184,21 +163,20 @@ services:
       dockerfile: Dockerfile
     image: kazhem/pymongo_api:1.0.0
     depends_on:
-#      - mongo1
-#      - mongo2
-#      - mongo3
-#      - mongo4
+#      - mongodb1
+      - mongo1
+      - mongo2
+      - mongo3
+      - mongo4
       - configSrv
       - mongos_router
     ports:
       - 8080:8080
-    networks:
-      app-network:
-        ipv4_address: 173.17.0.112
     environment:
-      MONGODB_URL: "mongodb://mongos_router:27020"
+#      MONGODB_URL: "mongodb://mongodb1"
+      MONGODB_URL: "mongodb://mongos_router"
       MONGODB_DATABASE_NAME: "somedb"
-################## networks
+
 networks:
   app-network:
     driver: bridge
@@ -213,34 +191,4 @@ volumes:
   mongo2-data:
   mongo3-data:
   mongo4-data:
-  redis_1_data: {}
-  redis_2_data: {}
-  redis_3_data: {}
-  redis_4_data: {}
-  redis_5_data: {}
-  redis_6_data: {}
-
-#OLD services:
-#OLD   mongodb1:
-#OLD     container_name: mongodb1
-#OLD     image: dh-mirror.gitverse.ru/mongo:latest
-#OLD     volumes:
-#OLD       - mongodb1_data_container:/data/db
-#OLD 
-#OLD   pymongo_api:
-#OLD     container_name: pymongo_api
-#OLD     build: 
-#OLD       context: api_app
-#OLD       dockerfile: Dockerfile
-#OLD     image: kazhem/pymongo_api:1.0.0
-#OLD     depends_on:
-#OLD       - mongodb1
-#OLD     ports:
-#OLD       - 8080:8080
-#OLD     environment:
-#OLD       MONGODB_URL: "mongodb://mongodb1"
-#OLD       MONGODB_DATABASE_NAME: "somedb"
-#OLD 
-#OLD 
-#OLD volumes:
-#OLD   mongodb1_data_container:
+#  mongodb1_data_container:

@@ -161,6 +161,29 @@ services:
       interval: 5s
       start_period: 10s
 
+## pymongo_api
+  pymongo_api:
+    container_name: pymongo_api
+    build: 
+      context: api_app
+      dockerfile: Dockerfile
+    image: kazhem/pymongo_api:1.0.0
+    depends_on:
+#      - mongodb1
+      - mongo1
+      - mongo2
+      - mongo3
+      - mongo4
+      - configSrv
+      - mongos_router
+    ports:
+      - 8080:8080
+    environment:
+#      MONGODB_URL: "mongodb://configSrv"
+#      MONGODB_URL: "mongodb://mongodb1"
+#      MONGODB_URL: "mongodb://mongos_router"
+      MONGODB_URL: "mongodb://mongo1" 
+      MONGODB_DATABASE_NAME: "somedb"
 ################################################### redis #################
   redis_1:
     image: "redis:latest"
@@ -175,30 +198,71 @@ services:
       app-network:
         ipv4_address: 173.17.0.2
 
-################################################### redis #################
-## pymongo_api
-  pymongo_api:
-    container_name: pymongo_api
-    build: 
-      context: api_app
-      dockerfile: Dockerfile
-    image: kazhem/pymongo_api:1.0.0
-    depends_on:
-#      - mongo1
-#      - mongo2
-#      - mongo3
-#      - mongo4
-      - configSrv
-      - mongos_router
+  redis_2:
+    image: "redis:latest"
+    container_name: redis_2
     ports:
-      - 8080:8080
+      - "6379"
+    volumes:
+      - redis_2_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
     networks:
       app-network:
-        ipv4_address: 173.17.0.112
-    environment:
-      MONGODB_URL: "mongodb://mongos_router:27020"
-      MONGODB_DATABASE_NAME: "somedb"
-################## networks
+        ipv4_address: 173.17.0.3
+
+  redis_3:
+    image: "redis:latest"
+    container_name: redis_3
+    ports:
+      - "6379"
+    volumes:
+      - redis_3_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    networks:
+      app-network:
+        ipv4_address: 173.17.0.4
+
+  redis_4:
+    image: "redis:latest"
+    container_name: redis_4
+    ports:
+      - "6379"
+    volumes:
+      - redis_4_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    networks:
+      app-network:
+        ipv4_address: 173.17.0.5
+
+  redis_5:
+    image: "redis:latest"
+    container_name: redis_5
+    ports:
+      - "6379"
+    volumes:
+      - redis_5_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    networks:
+      app-network:
+        ipv4_address: 173.17.0.6
+
+  redis_6:
+    image: "redis:latest"
+    container_name: redis_6
+    ports:
+      - "6379"
+    volumes:
+      - redis_6_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    networks:
+      app-network:
+        ipv4_address: 173.17.0.15
+################################################### redis #################
 networks:
   app-network:
     driver: bridge
