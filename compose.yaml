@@ -252,7 +252,7 @@ services:
 #      - mongo2
 #      - mongo3
 #      - mongo4
-#      - configSrv
+      - configSrv
       - mongos_router
     ports:
       - 8080:8080
